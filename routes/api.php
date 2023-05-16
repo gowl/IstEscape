@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EscapeRoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//Public Routes
+Route::get('/escape-rooms', [EscapeRoomController::class, 'index']);
+Route::get('/escape-rooms/{id}', [EscapeRoomController::class, 'show']);
+Route::get('/escape-rooms/{id}/time-slots', [EscapeRoomController::class, 'timeSlots'])->name('time-slots');
+
+Route::get('/bookings', [EscapeRoomController::class, 'index']);
+
+//Protected Routes
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/bookings', [EscapeRoomController::class, 'store']);
+    Route::delete('/bookings/{id}', [EscapeRoomController::class, 'destroy']);
 });
