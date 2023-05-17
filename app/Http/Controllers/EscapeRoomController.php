@@ -9,24 +9,12 @@ class EscapeRoomController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return EscapeRoom::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -36,29 +24,15 @@ class EscapeRoomController extends Controller
      */
     public function show(EscapeRoom $escapeRoom)
     {
-        //
+        return $escapeRoom;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EscapeRoom  $escapeRoom
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, EscapeRoom $escapeRoom)
+    public function timeSlots(EscapeRoom $escapeRoom)
     {
-        //
-    }
+        $escapeRoom['timeslots'] = $escapeRoom->timeSlots; //Adding the timeslots with the rest of the escapeRoom data for convenience
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\EscapeRoom  $escapeRoom
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(EscapeRoom $escapeRoom)
-    {
-        //
+        return [
+            $escapeRoom,
+        ];
     }
 }

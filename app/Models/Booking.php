@@ -14,6 +14,12 @@ class Booking extends Model
         'escape_room_id',
         'user_id',
         'begins_at',
-        'ends_at'
+        'ends_at',
+        'discount'
+    ];
+
+    protected $casts = [
+        'begins_at' => 'datetime',
+        'ends_at' => 'datetime',
     ];
 }
