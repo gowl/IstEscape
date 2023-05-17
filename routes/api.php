@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\EscapeRoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,14 +18,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 //Public Routes
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 Route::get('/escape-rooms', [EscapeRoomController::class, 'index']);
-Route::get('/escape-rooms/{id}', [EscapeRoomController::class, 'show']);
-Route::get('/escape-rooms/{id}/time-slots', [EscapeRoomController::class, 'timeSlots'])->name('time-slots');
+Route::get('/escape-rooms/{escapeRoom}', [EscapeRoomController::class, 'show']);
+Route::get('/escape-rooms/{escapeRoom}/time-slots', [EscapeRoomController::class, 'timeSlots'])->name('time-slots');
 
-Route::get('/bookings', [EscapeRoomController::class, 'index']);
 
 //Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/bookings', [EscapeRoomController::class, 'store']);
-    Route::delete('/bookings/{id}', [EscapeRoomController::class, 'destroy']);
+    Route::post('/bookings', [BookingController::class, 'store']);
+    Route::get('/bookings', [BookingController::class, 'index']);
+    Route::delete('/bookings/{booking}', [BookingController::class, 'destroy']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+
 });
+
