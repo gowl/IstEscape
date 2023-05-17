@@ -26,11 +26,13 @@ Route::get('/escape-rooms/{escapeRoom}/time-slots', [EscapeRoomController::class
 
 
 //Protected Routes
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/bookings', [BookingController::class, 'store']);
-    Route::get('/bookings', [BookingController::class, 'index']);
-    Route::delete('/bookings/{booking}', [BookingController::class, 'destroy']);
-    Route::post('/logout', [AuthController::class, 'logout']);
-
-});
+Route::group(
+    ['middleware' => ['auth:sanctum']],
+    function () {
+        Route::post('/bookings', [BookingController::class, 'store']);
+        Route::get('/bookings', [BookingController::class, 'index']);
+        Route::delete('/bookings/{booking}', [BookingController::class, 'destroy']);
+        Route::post('/logout', [AuthController::class, 'logout']);
+    }
+);
 

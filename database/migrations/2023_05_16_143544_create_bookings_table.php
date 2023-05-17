@@ -12,18 +12,21 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('bookings', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('escape_room_id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedTinyInteger('discount')->default(0)->comment('Discount in percentage');
-            $table->timestamp('begins_at')->comment('The timeslot this booking will begin at');
-            $table->timestamp('ends_at')->comment('The timeslot this booking will end at');
-            $table->timestamps();
+        Schema::create(
+            'bookings',
+            function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('escape_room_id');
+                $table->unsignedBigInteger('user_id');
+                $table->unsignedTinyInteger('discount')->default(0)->comment('Discount in percentage');
+                $table->timestamp('begins_at')->comment('The timeslot this booking will begin at');
+                $table->timestamp('ends_at')->comment('The timeslot this booking will end at');
+                $table->timestamps();
 
-            $table->foreign('escape_room_id')->references('id')->on('escape_rooms')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        });
+                $table->foreign('escape_room_id')->references('id')->on('escape_rooms')->onDelete('cascade');
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            }
+        );
     }
 
     /**

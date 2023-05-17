@@ -18,8 +18,12 @@ class EscapeRoom extends Model
 
     public function getTimeSlotsAttribute()
     {
-        return $this->timeSlots(now(), config('defaults.opening_hour'), config('defaults.closing_hour'),
-            $this->duration);
+        return $this->timeSlots(
+            now(),
+            config('defaults.opening_hour'),
+            config('defaults.closing_hour'),
+            $this->duration
+        );
     }
 
     public static function timeSlots($date, $startHour, $endHour, $duration)

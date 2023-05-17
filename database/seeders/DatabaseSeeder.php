@@ -29,23 +29,29 @@ class DatabaseSeeder extends Seeder
         User::factory(50)->create();
 
         //Generate Escape Rooms
-        EscapeRoom::create([
-            'theme' => 'The Philosopher\'s Stone',
-            'max_participants' => 5,
-            'duration' => 90,
-        ]);
+        EscapeRoom::create(
+            [
+                'theme' => 'The Philosopher\'s Stone',
+                'max_participants' => 5,
+                'duration' => 90,
+            ]
+        );
 
-        EscapeRoom::create([
-            'theme' => 'Horror Mansion',
-            'max_participants' => 8,
-            'duration' => 40,
-        ]);
+        EscapeRoom::create(
+            [
+                'theme' => 'Horror Mansion',
+                'max_participants' => 8,
+                'duration' => 40,
+            ]
+        );
 
-        EscapeRoom::create([
-            'theme' => 'Back to The Past',
-            'max_participants' => 3,
-            'duration' => 25,
-        ]);
+        EscapeRoom::create(
+            [
+                'theme' => 'Back to The Past',
+                'max_participants' => 3,
+                'duration' => 25,
+            ]
+        );
 
         //Generate Bookings
         for ($userId = 1; $userId <= User::all()->count(); $userId++) {
@@ -56,21 +62,31 @@ class DatabaseSeeder extends Seeder
     private function createBooking($userId)
     {
         $escapeRoom = EscapeRoom::find(rand(1, 3));
-        $date = Carbon::today()->addDays(rand(0,
-            7)); //Random date a week ahead (max)
-        $timeslots = EscapeRoom::timeSlots($date, config('defaults.opening_hour'), config('defaults.closing_hour'),
-            $escapeRoom->duration); //List of timeslots from opening time till closing time on a specific date
+        $date = Carbon::today()->addDays(
+            rand(
+                0,
+                7
+            )
+        ); //Random date a week ahead (max)
+        $timeslots = EscapeRoom::timeSlots(
+            $date,
+            config('defaults.opening_hour'),
+            config('defaults.closing_hour'),
+            $escapeRoom->duration
+        ); //List of timeslots from opening time till closing time on a specific date
 
         $beginsAt = Carbon::parse(collect($timeslots)->random()); //Starting time for this specific date
         $endsAt = Carbon::parse($beginsAt)->addMinutes($escapeRoom->duration); //Ending time for this specific date
         //Note: This mock data does not account for the max participants being exceeded in a specific time slot of an escape room
 
-        Booking::create([
-            'escape_room_id' => $escapeRoom->id,
-            'user_id' => $userId,
-            'begins_at' => $beginsAt,
-            'ends_at' => $endsAt,
-            //note: I won't be applying DoB discount logic to this seeded data cuz it's unnecessary
-        ]);
+        Booking::create(
+            [
+                'escape_room_id' => $escapeRoom->id,
+                'user_id' => $userId,
+                'begins_at' => $beginsAt,
+                'ends_at' => $endsAt,
+                //note: I won't be applying DoB discount logic to this seeded data cuz it's unnecessary
+            ]
+        );
     }
 }

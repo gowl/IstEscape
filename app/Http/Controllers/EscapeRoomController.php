@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EscapeRoom;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class EscapeRoomController extends Controller
 {
@@ -19,8 +20,8 @@ class EscapeRoomController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\EscapeRoom  $escapeRoom
-     * @return \Illuminate\Http\Response
+     * @param EscapeRoom $escapeRoom
+     * @return Response
      */
     public function show(EscapeRoom $escapeRoom)
     {
