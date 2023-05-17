@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -17,8 +16,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('escape_room_id');
             $table->unsignedBigInteger('user_id');
-            $table->timestamp('begins_at')->nullable();
-            $table->timestamp('ends_at')->nullable();
+            $table->unsignedTinyInteger('discount')->default(0)->comment('Discount in percentage');
+            $table->timestamp('begins_at')->comment('The timeslot this booking will begin at');
+            $table->timestamp('ends_at')->comment('The timeslot this booking will end at');
             $table->timestamps();
 
             $table->foreign('escape_room_id')->references('id')->on('escape_rooms')->onDelete('cascade');
