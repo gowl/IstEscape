@@ -1,64 +1,92 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<h1>IstEscape</h1>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## About This Project
 
-## About Laravel
+This project is a challenge given to me by a company I'm applying for. It was a fun test of my knowledge in backend development and creating a RESTful API with moderately complex DB schemas. The idea is an escape room with an authentication system that allows the user to see all escape rooms and their timeslots, create bookings for a specific date and timeslot, and delete it if needed. There's a lot more to it including a seeder and about 11 tests.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## How to Set Up
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Setting this up is pretty simple and just like any project. I will assume you know how to use homestead, valet, or whatever to run this project on your local machine.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. git clone into your projects directory
+2. create 2 databases, first is the main one for the api requests, and the second one is for the tests
+3. set up the .env and .env.testing with corresponding DB data
+4. run `php artisan migrate:fresh --seed` to build the main database and populate the data using the seeder
 
-## Learning Laravel
+And that should be it. You have a fully functioning project now.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## How to make the API requests
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+I have personally chosen Postman as my API dev platform, but you can use whatever. Here are the requests you can make with the correct body parameters:
 
-## Laravel Sponsors
+**Auth:**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+1. Register:
+    - Method: POST
+    - URL: istescape.test/api/register
+    - Description: Register a new user into the system
+    - Body data example:
+        - name: Jane Doe
+        - email: janedoe@gmail.com
+        - password: password
+        - dob: 1994/04/02
+2. Log In:
+    - Method: POST
+    - URL: istescape.test/api/login
+    - Description: Log in into the system as an existing user
+    - Body data example:
+        - email: janedoe@gmail.com
+        - password: password
+3. Log Out:
+    - Method: POST
+    - URL: istescape.test/api/logout
+    - Description: Log out from the current user and delete token
+    - Authorization necessary (Bearer token)
 
-### Premium Partners
+**Escape Rooms:**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+4. Retrieve All Escape Rooms:
+    - Method: GET
+    - URL: istescape.test/api/escape-rooms
+    - Description: View all Escape Rooms in the system
 
-## Contributing
+5. Show a Specific Escape Room
+    - Method: GET
+    - URL: istescape.test/api/escape-rooms/{id}
+    - Description: Show details about a specific escape room
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+6. Show a Specific Escape Room
+    - Method: GET
+    - URL: istescape.test/api/escape-rooms/{id}/time-slots
+    - Description: Show timeslots for specific escape room
 
-## Code of Conduct
+**Bookings:**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+7. Retrieve All Bookings For User
+    - Method: GET
+    - URL: istescape.test/api/bookings
+    - Description: Lists all bookings the currently logged in user has booked
+    - Authorization necessary
 
-## Security Vulnerabilities
+8. Create New Booking
+    - Method: POST
+    - URL: istescape.test/api/bookings
+    - Description: Creates a new booking for the currently logged in user
+    - Authorization necessary
+    - Body data example:
+        - escape_room_id: 3
+        - begins_at: 2023/05/20 17:30:00
+9. Delete Booking
+    - Method: DELETE
+    - URL: istescape.test/api/bookings/{id}
+    - Description: Delete a booking in the currently logged in user
+    - Authorization necessary
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+Notes: 
+- The header must contain key "Accept" and value "application/json"
+- The authorized routes will need you to use the token you got while registering/logging-in as the bearer token of the request in the authorization header
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## How to run the tests
+
+This one is pretty straight forward. Just run the command `php artisan test` and if you have set up your DB and .env.testing right, all 11 tests will be green. I have listed them all as feature tests and added no unit tests, although it's debatable where they fit in more.
