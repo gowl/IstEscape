@@ -106,7 +106,7 @@ class BookingController extends Controller
                 'user_id' => $user->id,
                 'begins_at' => $fields['begins_at'],
                 //Give the user a discount if the booking day is their birthday
-                'discount' => $selectedTimeSlotDay == $user->dob->format('m/d'),
+                'discount' => $selectedTimeSlotDay == $user->dob->format('m/d') ? 10 : 0,
                 'ends_at' => Carbon::parse($fields['begins_at'])->addMinutes($escapeRoom->duration),
             ]
         );

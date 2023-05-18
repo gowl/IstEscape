@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
@@ -25,7 +26,6 @@ class BookingTest extends TestCase
         $response->assertStatus(201)->assertJson(
             fn(AssertableJson $json) => $json
                 ->where('escape_room_id', '3')
-                ->where('begins_at', '2023-05-17T17:30:00.000000Z')
                 ->etc()
         );
     }
@@ -90,13 +90,31 @@ class BookingTest extends TestCase
         );
     }
 
+
+    public function test_booking_discount_on_birthday_works()
+    {
+        $user = User::find(1);
+        $this->actingAs($user); //Doing the test as the first user in the DB
+        $user->dob = today()->year(1990)->toDateString(
+        ); //Setting the birthday of the user to be the same as the same day the user is booking
+        $user->save();
+
+        $response = $this->createBooking();
+        $response->assertStatus(201)->assertJson(
+            fn(AssertableJson $json) => $json
+                ->where('escape_room_id', '3')
+                ->where('discount', 10)
+                ->etc()
+        );
+    }
+
     private function createBooking()
     {
         $response = $this->post(
             '/api/bookings',
             [
                 'escape_room_id' => '3',
-                'begins_at' => '2023-05-17T17:30:00.000000Z',
+                'begins_at' => Carbon::today()->toDateString() . 'T17:30:00.000000Z',
             ]
         );
         return $response;
