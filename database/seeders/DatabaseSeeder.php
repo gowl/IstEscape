@@ -74,9 +74,13 @@ class DatabaseSeeder extends Seeder
             config('defaults.closing_hour'),
             $escapeRoom->duration
         ); //List of timeslots from opening time till closing time on a specific date
+        $selectedTimeslot = Carbon::parse(collect($timeslots)->random()); //Selecting a random time from list
+        $beginsAt = Carbon::parse($date)->hours($selectedTimeslot->hour)->minutes(
+            $selectedTimeslot->minute
+        ); //Setting starting time for this specific date
+        $endsAt = Carbon::parse($beginsAt)->addMinutes($escapeRoom->duration)->toTimeString(
+        ); //Setting ending time for this specific date
 
-        $beginsAt = Carbon::parse(collect($timeslots)->random()); //Starting time for this specific date
-        $endsAt = Carbon::parse($beginsAt)->addMinutes($escapeRoom->duration); //Ending time for this specific date
         //Note: This mock data does not account for the max participants being exceeded in a specific time slot of an escape room
 
         Booking::create(
