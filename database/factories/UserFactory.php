@@ -23,7 +23,7 @@ class UserFactory extends Factory
             'name' => $faker->name(),
             'email' => $faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => '$2y$10$WBcxd8ewQSBJKfc25mnKoeBlXtB1vwOrCXAe.krGg8PrpiKXIwtcG', // password
             'remember_token' => Str::random(10),
             'dob' => $faker->dateTimeBetween('1990-01-01', '2005-12-31')
         ];
