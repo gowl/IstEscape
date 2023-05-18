@@ -105,8 +105,8 @@ class BookingController extends Controller
                 'escape_room_id' => $fields['escape_room_id'],
                 'user_id' => $user->id,
                 'begins_at' => $fields['begins_at'],
+                //Give the user a discount if the booking day is their birthday
                 'discount' => $selectedTimeSlotDay == $user->dob->format('m/d'),
-                //Give the user a discount if today is their birthday
                 'ends_at' => Carbon::parse($fields['begins_at'])->addMinutes($escapeRoom->duration),
             ]
         );
@@ -121,6 +121,7 @@ class BookingController extends Controller
     public function destroy($booking)
     {
         $booking = Booking::find($booking);
+        //Check if booking exists
         if (is_null($booking)) {
             return response(
                 [
@@ -129,7 +130,8 @@ class BookingController extends Controller
                 404
             );
         }
-        if ($booking->user_id == auth()->user()->id) { //Check if array is empty
+        //Make sure the user owns this booking before destruction
+        if ($booking->user_id == auth()->user()->id) {
             Booking::destroy($booking->id);
 
             return response(

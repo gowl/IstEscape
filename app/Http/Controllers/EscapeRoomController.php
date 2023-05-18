@@ -23,17 +23,35 @@ class EscapeRoomController extends Controller
      * @param EscapeRoom $escapeRoom
      * @return Response
      */
-    public function show(EscapeRoom $escapeRoom)
+    public function show($escapeRoom)
     {
+        $escapeRoom = EscapeRoom::find($escapeRoom);
+        if (is_null($escapeRoom)) {
+            return response(
+                [
+                    'message' => 'Escape Room not found'
+                ],
+                404
+            );
+        }
+
         return $escapeRoom;
     }
 
-    public function timeSlots(EscapeRoom $escapeRoom)
+    public function timeSlots($escapeRoom)
     {
-        $escapeRoom['timeslots'] = $escapeRoom->timeSlots; //Adding the timeslots with the rest of the escapeRoom data for convenience
+        $escapeRoom = EscapeRoom::find($escapeRoom);
+        if (is_null($escapeRoom)) {
+            return response(
+                [
+                    'message' => 'Escape Room not found'
+                ],
+                404
+            );
+        }
 
         return [
-            $escapeRoom,
+            'timeslots' => $escapeRoom->timeSlots,
         ];
     }
 }
